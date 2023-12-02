@@ -1,0 +1,97 @@
+'''img = cv2.imread("Py/test_img.jpg")
+
+cv2.imshow('Result', img) 
+cv2.waitKey(0)'''
+
+'''img = cv2.flip(img, 1)''' #Зеркалка (0-вер, 1-гор, -1-гор и вер)
+
+'''def rotate(img_param, angle):
+    height, width = img.shape[:2]
+    point = (width//2, height//2)
+
+    mat = cv2.getRotationMatrix2D(point, angle, 1)
+    return cv2.warpAffine(img_param, mat, (width, height))
+
+img = rotate(img, 90)''' #Вращение
+
+'''def transform(img_param, x, y):
+    mat = np.float32([[1, 0, x], [0, 1, y]])
+    return cv2.warpAffine(img_param, mat, (img_param.shape[1], img_param.shape[1]))
+
+img= transform(img, 30, 30)''' #Смещение
+
+'''new_img=np.zeros(img.shape, dtype='uint8')
+
+img=cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+img=cv2.GaussianBlur(img, (5, 5), 0)
+img=cv2.Canny(img, 30, 30)
+con, hir = cv2.findContours(img, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+
+cv2.drawContours(new_img, con, -1, (150, 0, 150), 1)''' #Отрисовка нового изображения на базе найденных углов
+
+'''kernel = np.ones((5, 5), np.uint8)
+img = cv2.dilate(img, kernel, iterations=1)'''#Создание матрицы kernel и увеличение обводки(нменьшение cv2.erode(img, kernel, iterations=1))
+
+'''img=cv2.Canny(img, 90, 90)''' #Нахождение углов + перевод в бинарный формат(формат Gray)
+
+'''img=cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)'''#Перевод в другие цвета
+
+'''img=cv2.GaussianBlur(img, (9, 9), 0)''' #Размытие(только нечетные значения)
+
+'''cv2.imshow('Result', img[0:100, 0:150])''' #Обрезка изображения
+
+'''x=1080
+y=720
+img=cv2.resize(img, (x, y)) '''#cv2.resize(img, (img.shape[1] // 2, img.shape[0] // 2)) - (Пропорциональное редактирование размера)
+
+'''print(img.shape)''' #Вывод размеров изображения
+
+
+'''cap=cv2.VideoCapture(0)
+cap.set(3, 500)
+cap.set(4, 300)
+while True:
+    success, img = cap.read()
+    cv2.imshow('Result', img)
+
+    if cv2.waitKey(1) & 0xFF==ord('q'):
+        break'''                            #Вывод вебкамеры
+
+'''cap=cv2.VideoCapture('Py/test_video.mp4')
+speed_of_video=30
+
+while True:
+    success, img = cap.read()
+    cv2.imshow('Result', img)
+
+    if cv2.waitKey(speed_of_video) & 0xFF==ord('q'):
+        break'''                                        #Вывод видео
+
+'''photo=np.zeros((450, 450, 3), dtype='uint8')''' #Создание изображения
+
+'''photo[:] = 255, 0, 255''' #Изменение цвета
+
+'''cv2.rectangle(photo, (50, 70), (100, 100), (255, 0, 255), thickness=cv2.FILLED)''' #Создание квадрата (cv2.FILLED)
+'''cv2.line(photo, (0, photo.shape[0]//2), (photo.shape[1], photo.shape[0]//2), (255, 0, 255), thickness=3)''' #Создание линии
+'''cv2.circle(photo, (photo.shape[1]//2, photo.shape[0]//2), 50, (255, 0, 255), thickness=2)''' #Создание круга
+'''cv2.putText(photo, 'Chototo', (100, 150), cv2.FONT_HERSHEY_TRIPLEX, 1, (255, 0, 0), 1)''' # Вывод текста
+
+'''cap=cv2.VideoCapture(0)
+cap.set(3, 500)
+cap.set(4, 300)
+while True:
+    success, img = cap.read()
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    faces=cv2.CascadeClassifier('Py/face.xml') #Нужный файл с нейронкой
+
+    results= faces.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=3) #Данные о положении лица
+
+    for(x, y, w, h) in results:
+        cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 255), thickness=3) #Обводка лица
+
+    cv2.imshow('Result', img)
+    if cv2.waitKey(1) & 0xFF==ord('q'):
+        break'''
+
+'''https://github.com/opencv/opencv/tree/master/data/haarcascades''' # Хааркаскады
