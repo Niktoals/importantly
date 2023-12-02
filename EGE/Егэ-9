@@ -1,0 +1,93 @@
+'''s=open('Питошка/9-103.txt').readlines()
+ls=[]
+for i in s:
+    a=sorted(int(x) for x in i.split())
+    l=((a[0]+20)**2 + (a[1]+20)**2)**0.5
+    ls.append(int(l))
+print(max(ls))'''
+
+'''s=open('Питошка/9-107.txt').readlines()
+n=0
+for i in s:
+    a=sorted(int(x) for x in i.split())
+    if max(a)>90 and sum(a)==180:
+        n+=1
+print(n)'''
+
+'''s=open('Питошка/9-119.txt').readlines()
+n=0
+for i in s:
+    a=[int(x) for x in i.split()]
+    if a[0] + a[2]==a[1] + a[3]:
+        n+=1
+print(n)'''
+
+'''s=open('Питошка/9-127.txt').readlines()
+n=0
+for i in s:
+    a=[int(x) for x in i.split()]
+    if (a[1]**2) - (4*a[0]*a[2])<0:
+        n+=1
+print(n)'''
+
+'''s=open('Питошка/9-132.txt').readlines()
+n=0
+for i in s:
+    a=[int(x) for x in i.split()]
+    l=((a[0]-a[2])**2 + (a[1]-a[3])**2)**0.5
+    if l<=5 and (a[0]*a[2]<=0 or a[1]*a[3]<=0):
+        print(a, a[0]*a[2], a[1]*a[3])
+        n+=1
+print(n)'''
+
+'''s=open('Питошка/9-140.txt').readlines()
+n=0
+for i in s:
+    a=[int(x) for x in i.split()]
+    if ((a[0]>0 and a[1]>0 and a[2]>0 and a[3]>0) and (min(a)>0 and max(a)<9)) and ((a[0] == a[2] and a[1]!=a[3]) or (a[1]==a[3] and a[0] != a[2])):
+        n+=1
+print(n)'''
+
+'''s=open('Питошка/9-146.txt').readlines()
+n=0
+for i in s:
+    a=[int(x) for x in i.split()]
+    if a[0]==a[3] and a[1]==a[2] and sum(a)==360:
+        print(a[0]==a[3], a[1]==a[2], sum(a))
+        n+=1
+print(n)'''
+
+''''s=open('Питошка/9-148.txt').readlines()
+ls=[]
+isp=0
+pol=0
+for i in s:
+    a=[int(x) for x in i.split()]
+    isp+=a[0]
+    pol+=a[1]
+    ls.append(a[1]/a[0])
+al=pol/isp
+n=0
+for i in ls:
+    if i>al:
+        n+=1
+print(n)'''
+
+'''s=open('Питошка/9-150.txt').readlines()
+n=0
+for i in s:
+    a=[int(x) for x in i.split()]
+    m=max(a)
+    a.remove(max(a))
+    if m**2>(a[0]*a[1])*2:
+        n+=1
+print(n)'''
+
+'''s=open('Питошка/9-157.txt').readlines()
+n=0
+for i in s:
+    a=[int(x) for x in i.split()]
+    if len(set(a))<=3:
+        print(a, set(a))
+        n+=1
+print(n)'''
