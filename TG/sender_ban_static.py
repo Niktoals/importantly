@@ -31,8 +31,8 @@ def creating_ban_list(file, db):
 
 def send_email(file=None):
     
-    sender = "to.artik.mp@gmail.com"
-    password = "qrfz fach hhrn bzgc"
+    sender = "*********"
+    password = "********"
 
     server = smtplib.SMTP("smtp.gmail.com", 587)
     server.starttls()
