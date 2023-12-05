@@ -18,6 +18,7 @@ from aiogram.types import ReplyKeyboardRemove,ReplyKeyboardMarkup, KeyboardButto
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from list_of_admins import list_of_admins as lsa
 
 #конфиг с настройками
 #кастомные ответы
@@ -79,41 +80,16 @@ async def main_start(message : types.Message):
 	button_edit_profile = KeyboardButton('Редактировать анкету📝')
 	button_send_request = KeyboardButton('Отправить запрос на просмотр анкет😏')
 	button_check_notes = KeyboardButton('Посмотреть ваши запросы')
-
 	button_remove_profile = KeyboardButton('Удалить🗑')
-
-	# button_rating_profile = KeyboardButton('Рейтинг анкет⭐️')
-
 	button_admin = KeyboardButton('Админка⚙️')
-
-	# button_aim = KeyboardButton(f'До добавления стикеров осталось {100 - db.count_user()[0]} пользователей')
-
 	menu = ReplyKeyboardMarkup(row_width=2)
 
 	if(not db.profile_exists(message.from_user.id)):
-			menu.add(button_join_chat,button_create_profile)#button_rating_profile
+			menu.add(button_join_chat,button_create_profile)
 	elif(db.profile_exists(message.from_user.id)) :
-		# print(db.get_info(str(message.from_user.id)))
-		# if int(db.get_info(str(message.from_user.id))[10]) < 51:
-		# 	button_rank = 'инопланетянин обычный👽'
-		# elif int(db.get_info(str(message.from_user.id))[10]) < 101:
-		# 	button_rank = 'кик флип🛹'
-		# elif int(db.get_info(str(message.from_user.id))[10]) < 151:
-		# 	button_rank = 'пожилой человек👨'
-		# elif int(db.get_info(str(message.from_user.id))[10]) < 201:
-		# 	button_rank = 'лучший в мире за работой👀'
-		# elif int(db.get_info(str(message.from_user.id))[10]) < 301:
-		# 	button_rank = 'гений мысли отец русской демократии🧠'
-		# button_ranked = KeyboardButton(f'Твой ранг - {button_rank}')
-		menu.add(button_join_chat,button_edit_profile,button_remove_profile, button_admin, button_send_request, button_check_notes)#button_rating_profile
-	# if message.from_user.id in config.ADMIN_LIST:
-	# 	menu.add(button_admin)
-	# menu.add(button_aim)
+		menu.add(button_join_chat,button_edit_profile,button_remove_profile, button_admin, button_send_request, button_check_notes)
+
 	await message.answer('Если что, то внизу есть кнопочки😉',reply_markup=menu)
-
-
-#хендлер для создания анкеты
-
 
 class CreateProfile(StatesGroup):
 	name = State()
@@ -125,16 +101,11 @@ class CreateProfile(StatesGroup):
 	social_link	 = State()
 	school=State()
 	
-#хендлер старта для создания анкеты
 @dp.message_handler(lambda message: message.text == 'Создать анкету📌',state='*')
 async def create_profile(message : types.Message):
-	#кнопки отмены
 	button_exit = KeyboardButton('Выйти❌')
-
 	menu_exit = ReplyKeyboardMarkup()
-
 	menu_exit.add(button_exit)
-
 	if message.from_user.username != None:
 		if(not db.profile_exists(message.from_user.id)):
 			await message.answer("Давайте начнём с твоего имени, как мне тебя называть?",reply_markup=menu_exit)
@@ -144,7 +115,6 @@ async def create_profile(message : types.Message):
 	else:
 		await message.answer('‼️У вас не заполнен username в телеграм!\n\nПожалуйста сделайте это для коректного функционирования бота\nДля этого зайдите в настройки -> Edit Profile(Изменить профиль) и жмякайте add username\n\nТам вводите желаемый никнейм и вуаля')
 
-#хендлер для заполнения имя
 @dp.message_handler(state=CreateProfile.name)
 async def create_profile_name(message: types.Message, state: FSMContext):
 	if str(message.text) == 'Выйти❌':
@@ -162,10 +132,7 @@ async def create_profile_name(message: types.Message, state: FSMContext):
 		await message.answer('У тебя в сообщении запрещённые символы🤬🤬\nЗапятая к примеру')
 	else:
 		await message.answer(cus_ans.random_reapeat_list())
-		#прерывание функции
 		return
-
-#хендлер для заполнение описания
 
 @dp.message_handler(state=CreateProfile.description)
 async def create_profile_description(message: types.Message, state: FSMContext):
@@ -186,9 +153,8 @@ async def create_profile_description(message: types.Message, state: FSMContext):
 		await message.answer('У тебя в сообщении запрещённые символы🤬🤬\nЗапятая к примеру', reply_markup=ReplyKeyboardRemove())
 	else:
 		await message.answer(cus_ans.random_reapeat_list())
-		#прерывание функции
 		return
-#хендлер для заполнения города
+
 @dp.message_handler(state=CreateProfile.city)
 async def create_profile_city(message: types.Message, state: FSMContext):
 	if str(message.text) == 'Выйти❌':
@@ -203,8 +169,8 @@ async def create_profile_city(message: types.Message, state: FSMContext):
 		await message.answer('У тебя в сообщении запрещённые символы🤬🤬\nЗапятая к примеру')
 	else:
 		await message.answer(cus_ans.random_reapeat_list())
-		#прерывание функции
 		return
+	
 @dp.message_handler(state=CreateProfile.photo,content_types=['photo'])
 async def create_profile_photo(message: types.Message, state: FSMContext):
 	if str(message.text) == 'Выйти❌':
@@ -526,52 +492,182 @@ class Admin(StatesGroup):
 
 @dp.message_handler(lambda message: message.text == 'Админка⚙️')
 async def admin_panel(message: types.Message):
-	if message.from_user.id == 682024407:
+	if message.from_user.id in lsa:
 		button_show_all_schools=KeyboardButton('Показать список школ')
 		button_count_users_in_school = KeyboardButton('Показать количество юзеров в школе')
 		button_count_all_users=KeyboardButton("Посчитать всех юзеров")
 		send_ban_static = KeyboardButton("Отправить бан-статистику")
 		button_cancel = KeyboardButton('Выйти❌')
+		send_post=KeyboardButton("Отправить пост в школу или всем")
 		admin_markup=ReplyKeyboardMarkup()
-		admin_markup.add(button_show_all_schools, button_count_users_in_school, button_count_all_users, button_cancel, send_ban_static)
+		admin_markup.add(button_show_all_schools, button_count_users_in_school, button_count_all_users, button_cancel, send_ban_static, send_post)
 		await bot.send_message(message.from_user.id, 'Добро пожаловать админ! Вот твои инструменты', reply_markup=admin_markup)
 	else:
 		await message.answer("Увы, но вам  отказано в доступе(")
 		return
+	
+class Send_post(StatesGroup):
+	number_of_school=State()
+	text_post = State()
+	photo_post = State()
+
+@dp.message_handler(lambda message: message.text == 'Отправить пост в школу или всем')
+async def list_of_schools(message: types.Message):
+	if message.from_user.id in lsa:
+		# send_all = KeyboardButton("Отправить всем школам")
+		send_to= KeyboardButton("Отправить в школу")
+		button_cancel = KeyboardButton('Выйти❌')
+		send_menu = ReplyKeyboardMarkup(one_time_keyboard=True)
+		send_menu.add(send_to,button_cancel)
+		await message.answer("Теперь выбери нужное", reply_markup=send_menu)
+	else:
+		await message.answer("Отказано в доступе")
+
+@dp.message_handler(lambda message: message.text == 'Отправить всем школам')
+async def list_of_schools(message: types.Message):
+	if message.from_user.id in lsa:
+		try:
+			button_cancel = KeyboardButton('Отменить❌')
+			button_cancel_menu = ReplyKeyboardMarkup(one_time_keyboard=True)
+			button_cancel_menu.add(button_cancel)
+			await message.answer('''Отправь текст поста''', reply_markup=button_cancel_menu)
+			await Send_post.text_post.set()
+		except:
+			await message.answer("Не получилось задать форму")
+	else:
+		await message.answer("Отказано в доступе")
+
+@dp.message_handler(lambda message: message.text == 'Отправить в школу')
+async def send_to_school(message: types.Message):
+	if message.from_user.id in lsa:
+		try:
+			button_cancel = KeyboardButton('Отменить❌')
+			button_cancel_menu = ReplyKeyboardMarkup(one_time_keyboard=True)
+			button_cancel_menu.add(button_cancel)
+			await message.answer('''Отправь номер школы''', reply_markup=button_cancel_menu)
+			await Send_post.number_of_school.set()
+		except:
+			await message.answer("Не получилось задать форму")
+	else:
+		message.answer("Отказано в доступе")
+
+@dp.message_handler(state=Send_post.number_of_school)
+async def set_school(message: types.Message, state: FSMContext):
+	try:
+		if str(message.text) == 'Отменить❌':
+			await state.finish()
+			await admin_panel(message)
+			return
+		elif len(message.text)<5:
+			await state.update_data(number_of_school=message.text)
+			await message.answer('Теперь введи текст')
+			await Send_post.next()
+	except Exception as e:
+		await message.answer(cus_ans.random_reapeat_list())
+		print(e)
+		return
+	
+@dp.message_handler(state=Send_post.text_post)
+async def set_text(message: types.Message, state: FSMContext):
+	try:
+		if str(message.text) == 'Отменить❌':
+			await state.finish()
+			await admin_panel(message)
+			return
+		elif len(message.text)<100:
+			button_skip = KeyboardButton('Пропустить')
+			skip_input = ReplyKeyboardMarkup(one_time_keyboard=True)
+			skip_input.add(button_skip)
+			await state.update_data(text_post=message.text)
+			await message.answer('Теперь отправь фото', reply_markup=skip_input)
+			await Send_post.next()
+	except Exception as e:
+		await message.answer(cus_ans.random_reapeat_list())
+		print(e)
+		return
+
+@dp.message_handler(state=Send_post.photo_post, content_types=['photo', 'text'])
+async def set_photo(message: types.Message, state: FSMContext):
+	try:
+		if str(message.text) == 'Пропустить':
+			# user_data = await state.get_data()
+			# if user_data['number_of_school']==None:
+			# 	await state.update_data(number_of_school='all')
+			user_data = await state.get_data()
+			caption=''
+			inf=[user_data['number_of_school'], user_data['text_post']]
+			for i in range(len(inf)):
+				caption+=inf[i]+'\n'
+			await message.answer(caption)
+			await state.finish()
+			await admin_panel(message)
+			return
+
+		await message.photo[-1].download('photo_posts/' + str(message.from_user.id) + '.jpg')
+		# user_data = await state.get_data()
+		# if user_data['number_of_school']==None:
+		# 	await state.update_data(number_of_school='all')
+		user_data = await state.get_data()
+		caption=''
+		photo = open('photo_posts/' + str(message.from_user.id) + '.jpg','rb')
+		inf=[user_data['number_of_school'], user_data['text_post']]
+		for i in range(len(inf)):
+			caption+=inf[i]+'\n'
+		await message.answer_photo(photo,caption=caption)
+		await state.finish()
+		photo.close()
+		await main_start(message)
+	except Exception as e:
+		await message.answer(cus_ans.random_reapeat_list())
+		print(e)
+		return
+	
 
 @dp.message_handler(lambda message: message.text == 'Отправить бан-статистику')
 async def list_of_schools(message: types.Message):
-	try:
-		file = 'ban_list.txt'
-		bs.creating_ban_list(file, db)
-		print(bs.send_email(file=file))
-		db.delete_ban_list()
-		await message.answer("Бан-лист был отправлен на вашу почту")
-		await admin_panel(message)
-	except:
-		await message.answer("Не удалось отправить бан-лист")
-		await admin_panel(message)
+	if message.from_user.id in lsa:
+		try:
+			file = 'ban_list.txt'
+			bs.creating_ban_list(file, db)
+			print(bs.send_email(file=file))
+			db.delete_ban_list()
+			await message.answer("Бан-лист был отправлен на вашу почту")
+			await admin_panel(message)
+		except:
+			await message.answer("Не удалось отправить бан-лист")
+			await admin_panel(message)
+	else:
+		message.answer("Отказано в доступе")
 
 @dp.message_handler(lambda message: message.text == 'Показать список школ')
 async def list_of_schools(message: types.Message):
-	list_of_schools=''
-	for school in db.get_schools():
-		list_of_schools+=str(school[0])+' '
-	await message.answer(list_of_schools)
+	if message.from_user.id in lsa:	
+		list_of_schools=''
+		for school in db.get_schools():
+			list_of_schools+=str(school[0])+' '
+		await message.answer(list_of_schools)
+	else:
+		message.answer("Отказано в доступе")
 	
 @dp.message_handler(lambda message: message.text == 'Посчитать всех юзеров')
 async def count_all_users(message: types.Message):
-	await message.answer(db.get_count_users()[0][0])
+	if message.from_user.id in lsa:	
+		await message.answer(db.get_count_users()[0][0])
+	else:
+		message.answer("Отказано в доступе")
 	
 @dp.message_handler(lambda message: message.text == 'Показать количество юзеров в школе')
 async def request_to_school(message: types.Message):
-    button_cancel = KeyboardButton('Отменить❌')
+	if message.from_user.id in lsa:	
+		button_cancel = KeyboardButton('Отменить❌')
 
-    button_cancel_menu = ReplyKeyboardMarkup(one_time_keyboard=True)
+		button_cancel_menu = ReplyKeyboardMarkup(one_time_keyboard=True)
 
-    button_cancel_menu.add(button_cancel)
-    await message.answer("Отправьте номер интересующей школы", reply_markup=button_cancel_menu)
-    await Admin.users_by_school.set()
+		button_cancel_menu.add(button_cancel)
+		await message.answer("Отправьте номер интересующей школы", reply_markup=button_cancel_menu)
+		await Admin.users_by_school.set()
+	else:
+		message.answer("Отказано в доступе")	
 
 @dp.message_handler(state=Admin.users_by_school)
 async def request_to_school(message: types.Message, state=FSMContext):
