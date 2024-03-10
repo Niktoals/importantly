@@ -9,22 +9,16 @@ for x in 0, 1:
                 #Условия через If/else
                 print(x, y, z, w, F)'''
 
-'''import itertools
-letters=['x', 'y', 'z', 'w']
-for combs in itertools.permutations(letters):
-    comb=''.join(combs)
-    #comb='xwzy' #xzwy xwyz xwzy
-    for dig in itertools.product('01', repeat=4):
-        x=int(dig[comb.find('x')])
-        y=int(dig[comb.find('y')])
-        z=int(dig[comb.find('z')])
-        w=int(dig[comb.find('w')])
-        f=( x <= (z == w)) or (not (y <= w))
-        # if dig==('0', '1', '0', '1') and int(f)==1:
-        #     print('+')
-        if int(f)==0:
-            print(comb, dig, int(f))
-    print('##########################')'''
+"""from itertools import *
+def f(a,b,c,d):
+    return (a or (not b)) and ((not a) or c) or (d== (a or b))
+
+for a in product([0,1], repeat=7):
+    table=[(a[0], a[1],1,a[2]), (1,1,a[3],a[4]),(1,a[5],1,a[6])]
+    if len(table) == len(set(table)):
+        for p in permutations('abcd'):
+            if [f(**dict(zip(p,r))) for r in table] == [0,0,0]:
+                print(p)"""
 
 #Номер 4
 '''Условие Фано - кодировка каждого символа не является началом кодировки другого символа
@@ -194,3 +188,40 @@ print(hex(n1 + n2)[2::])'''
     return any(h) if (m-1)%2==0 else all(h) #any
 
 print([s for s in range(1, 62) if not f(s, 6, 2) and f(s, 6, 4)])'''
+
+#tourtle
+"""from turtle import *
+color("black", "red")
+m = 100
+begin_fill()
+left(90)
+for i in range(2):
+    forward(8*m)
+    right(90)
+    forward(18*m)
+    right(90)
+end_fill()
+canvas= getcanvas()
+cnt = 0
+for y in range(-100*m,100*m, m) :
+    for x in range(-100*m, 100*m, m):
+        item = canvas.find_overlapping(x, y, x, y)
+        if len(item)==1 and item[0]==5:
+            cnt += 1
+print(cnt)
+done()
+exit()"""
+
+#19
+"""def f(s,m,p1,p2):
+    if s >= 21: return m%2==0
+    if m == 0: return 0
+    h = []
+    if p2 != '+1': h.append(f(s+1,m-1,'+1', p1))
+    if p2 != '+2': h.append(f(s+2,m-1,'+2', p1))
+    if p2 != '*2': h.append(f(s*2,m-1,'*2', p1))
+    return any(h) if (m-1) % 2 == 0 else all(h)
+
+
+print('1)', [s for s in range(1, 21) if not f(s,1,'','') and f(s,3,'','')])
+    """

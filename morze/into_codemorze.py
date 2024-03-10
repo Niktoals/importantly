@@ -25,6 +25,15 @@ from matplotlib import pyplot as plt
 # plt.plot(data_updated)
 # plt.show()
 
+codmorze = {'a': '•—', 'b': '—•••', 'c': '—•—•', 'd': '—••',
+         'e': '•', 'f': '••—•', 'g': '——•', 'h': '••••',
+         'i': '••', 'j': '•———', 'k': '—•—', 'l': '•—••',
+         'm': '——', 'n': '—•', 'o': '———', 'p': '•——•',
+         'q': '——•—', 'r': '•—•', 's': '•••', 't': '—',
+         'u': '••—', 'v': '•••—', 'w': '•——', 'x': '—••—',
+         'y': '—•——', 'z': '——••'}
+
+
 #Создание звукового файла, в который потом запишем произвольную звуковую последовательность
 dest=wave.open("morze.wav", "wb")
 
@@ -43,14 +52,23 @@ dash=open("dash.txt", "r").read()
 #     if i != '0':
 #         counter+=1
 # print(counter)
+input_data=input()
+decoded_string=''
+for word in input_data:
+    if word==" ":
+        decoded_string+=" "
+        continue
+    decoded_string+=codmorze[word]
+    decoded_string+=" "
+
 
 #Считывание произвольной последовательности из инпута
 sound=space
-input_data=input()
+input_data=decoded_string
 for sigh in input_data:
-    if sigh=='.':
+    if sigh=='•':
         sound+=dot
-    if sigh=='_':
+    if sigh=='—':
         sound+=dash
     if sigh==' ':
         sound+=space
@@ -58,6 +76,7 @@ sound+=space
 
 #форматирование массива данных str --> int
 sound=list(map(lambda x: int(x), sound.split(", ")))
+
 
 #Установка частоты дискретизации и прочих обязательных значений формата звукового файла
 dest.setnchannels(1)
