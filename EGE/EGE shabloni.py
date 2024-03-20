@@ -225,3 +225,38 @@ exit()"""
 
 print('1)', [s for s in range(1, 21) if not f(s,1,'','') and f(s,3,'','')])
     """
+#27
+"""# data_test=[[1,3], [5,12], [6,9], [5,4], [3,3], [1,1]]
+f=open("27-A_demo.txt")
+n=f.readline()
+data=[list(map(int, x[:-1:].split('  '))) for x in f.readlines()]
+data_r=[]
+summ=0
+for i in data:
+    summ+=max(i)
+    data_r.append(abs(i[0]-i[1]))
+data_r.sort()
+if summ%3==0:
+    for i in data_r:
+        if (summ-i)%3!=0:
+            summ-=i
+            break
+print(summ)
+
+f=open("C:/Users/toart/Documents/Py/27-B_2.txt")
+n=f.readline()
+data=[int(x) for x in f.readlines()]
+data.sort(reverse=True)
+flag=False
+print(data)
+for i in range(len(data)):
+    maxim=data[0]
+    for j in data[i+1::]:
+        summ=maxim*j
+        if summ%14==0:
+            flag=True
+            break
+    if flag==True:
+        break
+print(summ)
+"""

@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def load_dataset():
-	with np.load("Py/mnist.npz") as f:
+	with np.load("C:/Users/toart/Documents/Importantly/Synopsis/mnist.npz") as f:
 		# convert from RGB to Unit RGB
 		x_train = f['x_train'].astype("float32") / 255 
 		
