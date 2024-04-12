@@ -21,12 +21,16 @@ def scan(ip):
     return clients_list
 
 def print_results(res_list):
+    s=''
     print('IP\t\t\t\tMAC Adress\n-----------------------------------------------')
     for el in res_list:
+        s+=f'{el.get("IP")} '
         print(el.get("IP") + '\t\t' + el.get("MAC"))
         print('-----------------------------------------------')
-
-# options=get_args()
-# scan_result=scan(options.target)
-# print_results(scan_result)
+    print(s)
+if __name__ == "__main__":
+    options=get_args()
+    for i in range(1, 31):
+        scan_result=scan(f'{options.target}/{i}')
+        print_results(scan_result)
 
